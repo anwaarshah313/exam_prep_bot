@@ -1,0 +1,270 @@
+
+
+.chatMain {
+    display: grid;
+    place-items: center;
+}
+
+.chatIn {
+    width: 100%;
+    max-width: 1600px;
+}
+
+.chatOut {
+    display: flex;
+    width: 100% !important;
+    min-height: calc(100vh - 96px);
+}
+
+
+/* chat side CSS */
+
+
+.msgOut {
+    width: calc(100% - 200px);
+    padding: 10px;
+    padding-top: 34px;
+    padding-bottom: 60px;
+    position: relative;
+    border: 1px solid gray;
+}
+
+
+.msgAiDiv {
+    display: flex;
+    padding: 4px 0px;
+    width: 100%;
+}
+
+.msgAiScroll {
+    max-height: calc(100vh - 196px);
+    overflow-y: scroll;
+}
+
+.userMsg {
+    background-color: aquamarine;
+    padding: 8px 12px;
+    line-height: 18px;
+    border-radius: 10px;
+    width: fit-content;
+    max-width: calc(100% - 50px);
+    margin-left: auto;
+    justify-content: flex-end;
+    font-size: 12px;
+    font-family: var(--paragraph-font);
+}
+
+.aiMsg {
+    background-color: beige;
+    padding: 8px 14px;
+    border-radius: 10px;
+    max-width: calc(100% - 50px);
+    width: fit-content;
+    margin-right: auto;
+    justify-content: flex-start;
+    font-size: 12px;
+    line-height: 18px;
+    font-family: var(--paragraph-font);
+}
+
+
+.inputContainer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    padding: 4px 10px;
+    border-top: 1px solid gray;
+    font-family: var(--paragraph-font);
+}
+
+.inputMessage {
+    width: calc(100% - 110px);
+    padding: 8px 8px;
+    outline: none;
+    border-right: 1px solid gray;
+    font-family: var(--paragraph-font);
+
+}
+
+.sendMessageButton {
+    background: #003366;
+    color: white;
+    width: 100px;
+    padding: 8px 0px;
+    border-radius: 100px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-family: var( --button-font);
+}
+
+.sendMessageButton:hover {
+    background: #0059b3;
+}
+
+.selectChatText {
+    background-color: rgb(225, 225, 225);
+    height: calc(100% + 74px);
+    display: grid;
+    place-items: center;
+    color: rgb(0, 0, 0);
+    margin-top: -24px;
+    font-size: 13px;
+    font-family: var(--paragraph-font);
+
+}
+
+.chatNav {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    left: 0px;
+    background-color: #0059b3;
+    color: white;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--subtitle-font);
+}
+
+
+
+
+/* ID side CSS */
+
+
+.idOut {
+    background-color: rgb(240, 240, 240);
+    border: 1px solid gray;
+    border-left: none;
+    width: 200px;
+    position: relative;
+}
+
+.idNav {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    left: 0px;
+    background-color: #0059b3;
+    color: white;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--subtitle-font);
+
+}
+
+.idNameDiv {
+    margin-top: 30px;
+}
+
+
+.idName {
+    padding: 6px 8px;
+    margin: 6px 0px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--subtitle-font);
+}
+
+.idName:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.activeIdName {
+    background-color: rgb(255, 255, 255);
+}
+
+
+
+
+
+
+
+/* Responsive CSS */
+
+@media (max-width: 749px) {
+
+    .msgOut {
+        width: calc(100% - 80px);
+        padding: 6px;
+        padding-top: 34px;
+    }
+
+    .idOut {
+        width: 80px;
+    }
+
+    .idName {
+        padding: 4px 6px;
+        margin: 6px 0px;
+        font-size: 10px;
+        font-weight: 500;
+        
+
+    }
+
+    .userMsg {
+        background-color: aquamarine;
+        padding: 4px 8px;
+        border-radius: 8px;
+        width: fit-content;
+        max-width: calc(100% - 20px);
+        margin-left: auto;
+        justify-content: flex-end;
+        font-size: 10px;
+        line-height: 18px;
+        font-family: var(--paragraph-font);
+    }
+
+    .aiMsg {
+        background-color: beige;
+        padding: 4px 8px;
+        border-radius: 8px;
+        max-width: calc(100% - 20px);
+        width: fit-content;
+        margin-right: auto;
+        justify-content: flex-start;
+        font-size: 10px;
+        line-height: 18px;
+        font-family: var(--paragraph-font);
+    }
+
+    .selectChatText {
+        height: calc(100% + 20px);
+        font-size: 10px;
+
+    }
+
+
+    .inputContainer {
+        padding: 4px 6px;
+    }
+
+    .inputMessage {
+        width: calc(100% - 66px);
+        padding: 0;
+        outline: none;
+        border-right: none;
+        font-size: 10px;
+        font-family: var(--paragraph-font);
+    }
+
+    .sendMessageButton {
+        width: 60px;
+        padding: 8px 0px;
+        border-radius: 100px;
+        margin-left: 6px;
+        font-size: 10px;
+        font-family: var( --button-font);
+    }
+
+
+}

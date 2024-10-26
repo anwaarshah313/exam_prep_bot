@@ -1,0 +1,139 @@
+
+
+.sidebar {
+    margin-top: 30px;
+}
+
+/* Sidebar list items */
+.sidebarLi {
+    margin-bottom: 4px;
+    display: flex;
+    color: white;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--subtitle-font);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* Add smooth transition */
+}
+
+/* Hover effect on list items */
+.sidebarLi:hover {
+    background-color: #0059b3;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    color: #fff; /* Ensure text color changes for readability */
+}
+.active{
+    background-color: #0059b3;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    color: #fff; /* Ensure text color changes for readability */
+}
+
+/* Icon styling for the sidebar */
+.sidebarIcon {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+/* Hide mobile navigation by default */
+.mobileUl {
+    display: none;
+}
+
+.BtnOut{
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-family: var( --button-font);
+    cursor: pointer;
+}
+.logOutIcon{
+    font-size: 14px;
+    font-family: var( --button-font);
+margin-left: 10px;
+}
+
+.logOutBtn{
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    background: #003366;
+    width: 100%;
+    border-radius: 8px;
+    padding: 8px 20px;
+    margin-top: 20px !important;
+    font-size: 14px;
+    font-family: var( --button-font);
+    transition: all 0.2s ease-in-out;
+}
+.logOutBtn:hover{
+    background:  #0059b3;
+ }
+
+
+
+
+
+/* Media query for smaller screens */
+@media (max-width: 699px) {
+
+    .BtnOut{
+        display: none;
+    }
+
+    .MobBtnOut{
+        display: flex;
+        align-items: center;
+        justify-content: center;        
+        margin-top: 20px !important;
+    }
+
+    .MoLogOutBtn{
+        display: flex;
+        place-items: center;
+        justify-content: center;
+      padding-left: 3px;
+        border-radius: 50px;
+        height: 40px;
+        width: 40px;
+        background: #003366;
+        color: white;
+        font-size: 18px;
+        transition: all 0.2s ease-in-out;
+    }
+
+
+    /* Hide desktop view */
+    .leptopUl {
+        display: none;
+    }
+
+    /* Show mobile view */
+    .mobileUl {
+        display: block;
+    }
+
+    /* Adjust icon spacing for mobile */
+    .sidebarIcon {
+        font-size: 20px;
+        margin-right: 0;
+    }
+
+    /* Center items and add padding for easier tap on mobile */
+    .sidebarLi {
+        justify-content: center;
+        padding: 10px;
+    }
+
+    /* Improve hover effect for mobile view */
+    .sidebarLi:hover {
+        background-color: #0059b3;
+        border-radius: 50%; /* Make the hover effect circular */
+    }
+}

@@ -1,0 +1,40 @@
+.navbarMain {
+    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    display: grid;
+    place-items: center;
+}
+
+.navbarIn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    padding: 0px 30px;
+    max-width: 1500px;
+}
+
+.navbarLogo {
+    font-size: 24px;
+    font-family: var(--heading-font);
+    font-weight: 600;
+}
+
+.navbarImage {
+    height: 46px;
+    width: 46px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+
+
+
+
+@media (max-width: 699px) {
+ 
+    .navbarIn {
+        padding: 0px 20px;
+        max-width: 1500px;
+    }
+  }

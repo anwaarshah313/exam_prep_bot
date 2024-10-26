@@ -1,0 +1,74 @@
+.signUpMain {
+    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+}
+
+.formOutDiv {
+    background-color: white;
+    color: black;
+    padding: 40px 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.from {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.formHeading {
+    margin-bottom: 10px;
+    font-size: 35px;
+    font-weight: 600;
+    font-family: var(--heading-font);
+}
+
+.inputOut {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.input {
+    background-color: none;
+    border: 1px solid gray;
+    color: rgb(2, 2, 2);
+    min-width: 240px;
+    width: 100% !important;
+    outline: none;
+    padding: 10px 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-family: var(--paragraph-font);
+}
+
+.placeholder {
+   font-size: 12px;
+   font-family: var(--paragraph-font);
+}
+
+.formBtn {
+    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var( --button-font);
+}
+
+.loginPra {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    font-family: var( --button-font);
+}
