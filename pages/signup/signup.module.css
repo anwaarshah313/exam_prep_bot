@@ -1,17 +1,18 @@
 .signUpMain {
-    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    background: var(--background);
     display: grid;
     place-items: center;
     min-height: 100vh;
 }
 
 .formOutDiv {
-    background-color: white;
-    color: black;
+    background-color: var(--foreground);
+    color: var(--text);
     padding: 40px 30px;
     border-radius: 12px;
     width: 100%;
     max-width: 500px;
+    box-shadow: var(--shadow);
 }
 
 .from {
@@ -39,8 +40,8 @@
 
 .input {
     background-color: none;
-    border: 1px solid gray;
-    color: rgb(2, 2, 2);
+    border: 1px solid var(--background);
+    color: var(--text);
     min-width: 240px;
     width: 100% !important;
     outline: none;
@@ -56,14 +57,15 @@
 }
 
 .formBtn {
-    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    background: var(--button);
     width: 100%;
     padding: 10px 16px;
     border-radius: 6px;
-    color: white;
+    color: var(--foreground);
     font-size: 16px;
     font-weight: 600;
     font-family: var( --button-font);
+    box-shadow: var(--shadow);
 }
 
 .loginPra {

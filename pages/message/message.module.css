@@ -9,31 +9,49 @@
 }
 
 
-.inNav {
-    /* background-color: rgb(185, 126, 49); */
+.inNav {}
+
+.globleIcon {
+    font-size: 14px;
+    font-family: var(--button-font);
+    margin-left: 10px;
 }
+
+.cardEditBtn {
+    font-size: 14px;
+    margin-bottom: 10px;
+    height: fit-content;
+    color: var(--text);
+}
+
+.headRowOut {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
 
 .addCardBtn {
     display: flex;
     place-items: center;
     justify-content: center;
-    background: #0059b3;
-    color: white;
+    background: var(--button);
+    color: var(--foreground);
     width: fit-content;
     border-radius: 8px;
     padding: 8px 20px;
     transition: all 0.2s ease-in-out;
     font-size: 14px;
-    font-family: var( --button-font);
+    font-family: var(--button-font);
 }
 
 .addCardBtn:hover {
-    background: #003366;
+    background: var(--btnHover);
 }
 
 .cardOut {
     margin-top: 10px;
-    /* background-color: bisque; */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 16px;
@@ -42,12 +60,12 @@
 .card {
     display: flex;
     flex-direction: column;
-    border: 1px solid rgb(195, 195, 195);
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background-color: rgba(243, 243, 243, 0.971);
+    background-color: rgba(248, 248, 248, 0.971);
     padding: 14px;
     height: 100%;
-    justify-content: space-between; /* This ensures that the button aligns at the bottom */
+    justify-content: space-between;
 }
 
 .CardHead {
@@ -58,13 +76,13 @@
 }
 
 .cardPra {
-    white-space: normal; /* Ensures text wraps */
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limits to 3 lines */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
-    margin-bottom: 10px; /* Adds space between description and progress bar */
+    margin-bottom: 10px;
     font-size: 14px;
     font-family: var(--paragraph-font);
 }
@@ -77,18 +95,18 @@
 }
 
 .progressBar::-webkit-progress-bar {
-    background-color: #a4a4a4; /* Light grey background */
-    border-radius: 10px; /* Rounded corners for the container */
+    background-color: var(--foreground);
+    border-radius: 10px;
 }
 
 .progressBar::-webkit-progress-value {
-    background-color: #003366; /* Dark blue progress */
-    border-radius: 10px; /* Rounded corners for the progress bar value */
+    background-color: var(--border);
+    border-radius: 10px;
 }
 
 .progressBar::-moz-progress-bar {
-    background-color: #003366; /* Dark blue progress */
-    border-radius: 10px; /* Rounded corners for the progress bar value in Firefox */
+    background-color: var(--border);
+    border-radius: 10px;
 }
 
 .popupOut {
@@ -98,12 +116,11 @@
     top: 10%;
     left: calc(50% + 110px);
     transform: translateX(-50%);
-    /* background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6); */
-    background-color: white;
-    color: black;
+    background-color: var(--foreground);
+    color: var(--text);
+    box-shadow: var(--shadow);
     border-radius: 8px;
     padding: 16px;
-    border: 1px solid black;
     z-index: 1000;
 }
 
@@ -117,8 +134,8 @@
 
 .input {
     background-color: none;
-    border: 1px solid gray;
-    color: rgb(2, 2, 2);
+    border: 1px solid var(--background);
+    color: var(--text);
     min-width: 300px;
     width: 100% !important;
     outline: none;
@@ -127,41 +144,42 @@
     font-size: 13px;
     font-family: var(--paragraph-font);
 }
-.closeBtn{
+
+.closeBtn {
     display: flex;
     place-items: center;
     justify-content: center;
-    background: #0059b3;
-    color: white;
+    background: var(--button);
+    color: var(--foreground);
     width: fit-content;
     border-radius: 50px;
-   height: 30px;
-   width: 30px;
-   margin-bottom: 10px;
-   font-size: 14px;
-   font-family: var( --button-font);
+    height: 30px;
+    width: 30px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-family: var(--button-font);
 
 }
 
-.closeBtn:hover{
-    background-color:#004080;
+.closeBtn:hover {
+    background-color: var(--btnHover);
 }
 
-.error{
-    color:red;
+.error {
+    color: var(--error);
 }
 
-  
-  .backdrop {
+
+.backdrop {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.713);
-    z-index: 50; /* Ensure it's below the popup and above other content */
-  }
-  
+    background-color: rgba(0, 0, 0, 0.455);
+    z-index: 990;
+}
+
 
 
 
@@ -175,10 +193,12 @@
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 10px;
     }
+
     .popupOut {
         left: calc(50% + 25px);
         padding: 14px;
     }
+
     .input {
         font-size: 16px;
         background-color: none;
@@ -186,6 +206,6 @@
         color: rgb(2, 2, 2);
         min-width: 250px;
     }
-    
+
 
 }

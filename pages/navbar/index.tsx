@@ -7,7 +7,7 @@ export default function Navbar() {
     <>
        <nav className={styles.navbarMain}>
             <div className={styles.navbarIn}>
-                <h1 className={styles.navbarLogo}>Navbar Logo</h1>
+                <h1 className={styles.navbarLogo}>Dashboard</h1>
 
                 {/* Display the image */}
                 <img

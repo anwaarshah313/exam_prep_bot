@@ -35,6 +35,7 @@ export default function Sidebar() {
             <div className={styles.sidebar}>
                 {/* Desktop/Laptop Sidebar */}
                 <ul className={styles.leptopUl}>
+                <div>
                     <Link href="/" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
                             <FaHome className={styles.sidebarIcon} /> Home
@@ -55,16 +56,17 @@ export default function Sidebar() {
                         <FaComment className={styles.sidebarIcon} /> Chat
                         </li>
                     </Link>
+                    </div>
                     <div className={styles.BtnOut}>
                         <button onClick={handleLogout} className={styles.logOutBtn}>
                         Logout  <FaSignOutAlt className={styles.logOutIcon}  /> 
                         </button>
                     </div>
-
                 </ul>
 
                 {/* Mobile Sidebar */}
                 <ul className={styles.mobileUl}>
+                <div>
                     <Link href="/" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
                             <FaHome className={styles.sidebarIcon} />
@@ -85,6 +87,7 @@ export default function Sidebar() {
                         <FaComment className={styles.sidebarIcon} />
                         </li>
                     </Link>
+                    </div>
                     <div className={styles.MobBtnOut}>
                         <button onClick={handleLogout} className={styles.MoLogOutBtn}>
                          <FaSignOutAlt /> 

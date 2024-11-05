@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react';
 import styles from "./message.module.css";
+import { FaEdit, FaPlus } from 'react-icons/fa';
+
 
 export default function Message() {
   const [showPopup, setShowPopup] = useState(false);
@@ -15,6 +17,7 @@ export default function Message() {
     { id: 8, heading: "Card 8", description: "Description of Card 8", progress: 90 },
     { id: 9, heading: "Card 9", description: "Description of Card 9", progress: 10 },
     { id: 10, heading: "Card 10", description: "Description of Card 10", progress: 25 },
+
   
 ]);
 
@@ -89,7 +92,7 @@ export default function Message() {
       <div className={styles.messageMain}>
         <div className={styles.messageIn}>
           <nav className={styles.inNav}>
-          <button className={styles.addCardBtn} onClick={togglePopup}>Add New Card</button>
+          <button className={styles.addCardBtn} onClick={togglePopup}> Add Card <FaPlus className={styles.globleIcon}/></button>
           </nav>
           {showPopup && (
             <div className={styles.popupOut}>
@@ -131,10 +134,13 @@ export default function Message() {
           {cards.map(card => (
 
             <div key={card.id} className={styles.card}>
+              <div className={styles.headRowOut}>
               <h3 className={styles.CardHead}>{card.heading}</h3>
+              <button  className={styles.cardEditBtn} onClick={() => startEditing(card.id)}><FaEdit /></button>
+              </div>
               <p className={styles.cardPra}>{card.description}</p>
               <progress className={styles.progressBar} value={card.progress} max="100"></progress>
-              <button className={styles.addCardBtn} onClick={() => startEditing(card.id)}>Edit</button>
+              {/* <button className={styles.addCardBtn} onClick={() => startEditing(card.id)}> Edit <FaEdit  className={styles.globleIcon}/></button> */}
             </div>
           ))}
           </div>

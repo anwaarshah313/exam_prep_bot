@@ -1,28 +1,30 @@
 .navbarMain {
-    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    background: var(--background);
     display: grid;
     place-items: center;
+    border-bottom: 1px solid var(--graphTwo);
 }
 
 .navbarIn {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 40px;
     width: 100%;
     padding: 0px 30px;
     max-width: 1500px;
 }
 
 .navbarLogo {
-    font-size: 24px;
+    font-size: 18px;
     font-family: var(--heading-font);
+    color: var(--text);
     font-weight: 600;
 }
 
 .navbarImage {
-    height: 46px;
-    width: 46px;
+    height: 36px;
+    width: 36px;
     border-radius: 50px;
     object-fit: cover;
 }

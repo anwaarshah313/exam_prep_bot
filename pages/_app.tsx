@@ -38,7 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [router, currentPath]);
 
   if (loading) {
-    return <div >Loading...</div>;
+    return <div>Loading...</div>;
   }
 
   // If the user is logged in, render the main component

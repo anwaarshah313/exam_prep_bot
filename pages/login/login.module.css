@@ -1,17 +1,20 @@
+/* @import "../../styles/globals.css"; */
+
 .signUpMain {
-    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    background: var(--background);
     display: grid;
     place-items: center;
     min-height: 100vh;
 }
 
 .formOutDiv {
-    background-color: white;
-    color: black;
+    background-color: var(--foreground);
+    color: var(--text);
     padding: 40px 30px;
     border-radius: 12px;
     width: 100%;
     max-width: 500px;
+    box-shadow: var(--shadow);
 }
 
 .from {
@@ -40,8 +43,8 @@
 
 .input {
     background-color: none;
-    border: 1px solid gray;
-    color: rgb(2, 2, 2);
+    border: 1px solid var(--background);
+    color: var(--text);
     min-width: 240px;
     width: 100% !important;
     outline: none;
@@ -57,11 +60,12 @@
 }
 
 .formBtn {
-    background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+    background: var(--button);
+    box-shadow: var(--shadow);
     width: 100%;
     padding: 10px 16px;
     border-radius: 6px;
-    color: white;
+    color: var(--foreground);
     font-size: 16px;
     font-weight: 600;
     font-family: var( --button-font);
@@ -69,11 +73,11 @@
 
 .googleBtn {
     margin-top: 14px;
-    background: rgba(0, 0, 0, 0.891);
+    background: var(--text);
     width: 100%;
     padding: 10px 16px;
     border-radius: 6px;
-    color: white;
+    color: var(--foreground);
     font-size: 16px;
     font-weight: 600;
     font-family: var( --button-font);
@@ -92,7 +96,7 @@
     margin-top: -14px;
     margin-bottom: 14px;
     width: 100%;
-    color: #005ab3ee;
+    color: var(--button);
     font-size: 14px;
     font-family: var( --button-font);
 }
@@ -110,7 +114,7 @@
 }
 
 .checkText {
-    color: black;
+    color: var(--text);
     margin-left: 6px;
     font-size: 14px;
     font-family: var( --button-font);
