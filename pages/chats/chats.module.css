@@ -34,8 +34,10 @@
 .msgAiScroll {
     max-height: calc(100vh - 148px);
     padding-bottom: 50px;
-    margin-top: 40px;
+    margin-top: 30px;
+    padding-top: 10px;
     overflow-y: scroll;
+
 }
 
 .userMsg {
@@ -108,6 +110,16 @@
     font-family: var(--paragraph-font);
 }
 
+.noMessagesText {
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--paragraph-font);
+}
+
+
 .chatNav {
     position: absolute;
     top: 0px;
@@ -161,18 +173,38 @@
     background-color: var(--foreground);
     color: var(--text);
     height: 30px;
-    display: grid;
-    place-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
     font-size: 12px;
     font-weight: 600;
     font-family: var(--subtitle-font);
 
 }
 
-.idNameDiv {
-    margin-top: 34px;
+.addBtnIcon {
+    font-size: 22px;
 }
 
+.deleteBtnIcon{
+    font-size: 18px;
+}
+
+.idNameDiv {
+    margin-top: 30px;
+    max-height: calc(100vh - 130px);
+    overflow-y: scroll;
+    padding-top: 6px;
+}
+
+.idSpan{
+display: block;
+width: 100%;       
+white-space: nowrap; 
+overflow: hidden; 
+text-overflow:ellipsis;
+}
 
 .idName {
     padding: 6px 8px;
@@ -181,11 +213,12 @@
     font-size: 12px;
     font-weight: 600;
     font-family: var(--subtitle-font);
+    display: flex;
+    justify-content: space-between;
 }
 
 .idName:hover {
     border-right: 3px solid var(--active);
-
 }
 
 .activeIdName {
@@ -209,8 +242,18 @@
 
     .msgOut {
         width: calc(100% - 80px);
-        padding: 6px;
-        padding-top: 34px;
+    }
+
+    .msgAiScroll {
+        padding-bottom: 10px;
+    }
+
+    .msgAiDiv {
+        padding: 3px 8px;
+    }
+
+    .profileImage {
+        margin: 2px;
     }
 
     .idOut {
@@ -231,7 +274,7 @@
         border-radius: 8px;
         width: fit-content;
         max-width: calc(100% - 20px);
-        margin-left: auto;
+        margin-left: auto !important;
         justify-content: flex-end;
         font-size: 10px;
         line-height: 18px;
@@ -253,7 +296,10 @@
     .selectChatText {
         height: calc(100% + 20px);
         font-size: 10px;
+    }
 
+    .noMessagesText {
+        font-size: 10px;
     }
 
 
@@ -279,5 +325,12 @@
         font-family: var(--button-font);
     }
 
+    .addBtnIcon {
+        font-size: 18px;
+    }
+    .deleteBtnIcon{
+        font-size: 12px;
+    }
+    
 
 }

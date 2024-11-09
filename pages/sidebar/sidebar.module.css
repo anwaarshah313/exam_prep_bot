@@ -105,11 +105,11 @@
         justify-content: center;
         padding-left: 3px;
         border-radius: 50px;
-        height: 40px;
-        width: 40px;
+        height: 32px;
+        width: 32px;
         background: var(--button);
         color: var(--foreground);
-        font-size: 18px;
+        font-size: 16px;
         transition: all 0.2s ease-in-out;
     }
 

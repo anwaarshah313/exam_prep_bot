@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from "./chats.module.css";
+import { VscGitPullRequestNewChanges, VscTrash } from "react-icons/vsc";
 
 export default function Chats() {
     type Message = {
@@ -12,7 +13,7 @@ export default function Chats() {
         messages: Message[];
     };
 
-    const chats: Chat[] = [
+    const [chats, setChats] = useState<Chat[]>([
         {
             id: '1',
             messages: [
@@ -56,14 +57,12 @@ export default function Chats() {
         {
             id: '4',
             messages: [
-                { speaker: 'user', message: 'I am doing great, thanks!' },
-                { speaker: 'ai', message: 'Glad to hear that!' },
-                { speaker: 'user', message: 'Got any fun projects you’re working on?' },
-                { speaker: 'ai', message: 'Yes, working on learning new things!' }
+
             ]
         },
 
-    ];
+
+    ]);
 
     // Initialize activeChat as an object to store both user and ai
     const [activeChat, setActiveChat] = useState<Chat | null>(null);
@@ -87,6 +86,24 @@ export default function Chats() {
         }
     };
 
+    const addNewChat = () => {
+        const newChat: Chat = {
+            id: (chats.length + 1).toString(),
+            messages: []
+        };
+        setChats([...chats, newChat]);
+    };
+
+    // Function to delete a chat
+    const deleteChat = (chatId: string) => {
+        if (window.confirm("Are you sure you want to delete this chat?")) {
+            setChats(chats.filter(chat => chat.id !== chatId));
+            if (activeChat && activeChat.id === chatId) {
+                setActiveChat(null); // Clear active chat if it's the one being deleted
+            }
+        }
+    };
+
     const showProfileImage = (messages: Message[], index: number) => {
         if (index === 0) return true; // Show for the first message
         return messages[index].speaker !== messages[index - 1].speaker;
@@ -105,49 +122,54 @@ export default function Chats() {
                             <></>
                         )}
 
-                        {activeChat ? (
-                            <div className={styles.msgAiScroll}>
-                                {activeChat.messages.map((message, index) => (
-                               <div key={index} className={styles.msgAiDiv}>
-                               {message.speaker === 'ai' ? (
-                                   <>
-                                       {showProfileImage(activeChat.messages, index) ? (
-                                           <img
-                                               src="https://th.bing.com/th/id/OIP.eDmVlM1M4HwCRrBBPJX3vwHaHa?rs=1&pid=ImgDetMain"
-                                               alt="AI"
-                                               className={styles.profileImage}
-                                           />
-                                       ) : (
-                                           <div className={styles.profileImagePlaceholder}></div>
-                                       )}
-                                       <p className={styles.aiMsg}>
-                                           {message.message}
-                                       </p>
-                                   </>
-                               ) : (
-                                   <>
-                                       <p className={styles.userMsg}>
-                                           {message.message}
-                                       </p>
-                                       {showProfileImage(activeChat.messages, index) ? (
-                                           <img
-                                               src="https://th.bing.com/th/id/OIP.j-JTkZ2VRxE0QvycQpQJbgAAAA?rs=1&pid=ImgDetMain"
-                                               alt="User"
-                                               className={styles.profileImage}
-                                           />
-                                       ) : (
-                                           <div className={styles.profileImagePlaceholder}></div>
-                                       )}
-                                   </>
-                               )}
-                           </div>
-                           
-                                ))}
-                            </div>
-                        ) : (
-                            <p className={styles.selectChatText}> Select a chat to view messages</p>
-                        )}
-
+                        {chats.length === 0 ? (<p className={styles.selectChatText}>Please click new chat and start conversation!</p>) : (
+                            <>
+                                {activeChat ? (
+                                    <div className={styles.msgAiScroll}>
+                                        {activeChat.messages.length > 0 ? (
+                                            activeChat.messages.map((message, index) => (
+                                                <div key={index} className={styles.msgAiDiv}>
+                                                    {message.speaker === 'ai' ? (
+                                                        <>
+                                                            {showProfileImage(activeChat.messages, index) ? (
+                                                                <img
+                                                                    src="https://th.bing.com/th/id/OIP.eDmVlM1M4HwCRrBBPJX3vwHaHa?rs=1&pid=ImgDetMain"
+                                                                    alt="AI"
+                                                                    className={styles.profileImage}
+                                                                />
+                                                            ) : (
+                                                                <div className={styles.profileImagePlaceholder}></div>
+                                                            )}
+                                                            <p className={styles.aiMsg}>
+                                                                {message.message}
+                                                            </p>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <p className={styles.userMsg}>
+                                                                {message.message}
+                                                            </p>
+                                                            {showProfileImage(activeChat.messages, index) ? (
+                                                                <img
+                                                                    src="https://th.bing.com/th/id/OIP.j-JTkZ2VRxE0QvycQpQJbgAAAA?rs=1&pid=ImgDetMain"
+                                                                    alt="User"
+                                                                    className={styles.profileImage}
+                                                                />
+                                                            ) : (
+                                                                <div className={styles.profileImagePlaceholder}></div>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p className={styles.noMessagesText}>Enter your message and begin the conversation!</p>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <p className={styles.selectChatText}> Select a chat to view messages</p>
+                                )}
+                            </>)}
                         {activeChat ? (
                             <div className={styles.inputContainer}>
                                 <input
@@ -169,6 +191,9 @@ export default function Chats() {
                     <div className={styles.idOut}>
                         <div className={styles.idNav}>
                             Chat's
+                            <button onClick={addNewChat}>
+                                <VscGitPullRequestNewChanges className={styles.addBtnIcon} />
+                            </button>
                         </div>
                         <div className={styles.idNameDiv}>
                             {chats.map(chat => (
@@ -177,7 +202,13 @@ export default function Chats() {
                                     key={chat.id}
                                     onClick={() => handleChatClick(chat)}
                                 >
-                                    Chat No {chat.id}
+                                    <span className={styles.idSpan}>
+                                        Chat No {chat.id}
+                                    </span>
+
+                                    <button className={styles.deleteBtn} onClick={() => deleteChat(chat.id)}>
+                                        <VscTrash className={styles.deleteBtnIcon} />
+                                    </button>
                                 </div>
                             ))}
                         </div>

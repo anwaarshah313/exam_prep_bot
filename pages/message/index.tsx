@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 import styles from "./message.module.css";
 import { FaEdit, FaPlus } from 'react-icons/fa';
 
+interface Card {
+  id: number;
+  heading: string;
+  description: string;
+  progress: number;
+}
 
 export default function Message() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [cards, setCards] = useState([
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [cards, setCards] = useState<Card[]>([
     { id: 1, heading: "Card 1", description: "Description of Card 1", progress: 20 },
     { id: 2, heading: "Card 2", description: "Description of Card 2Description of Card 2Description of Card 2", progress: 40 },
     { id: 3, heading: "Card 3", description: "Description of Card 3", progress: 60 },
@@ -21,21 +27,22 @@ export default function Message() {
   
 ]);
 
-  const [editingId, setEditingId] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [formData, setFormData] = useState({
-    heading: '',
-    description: '',
-    progress: 0
-  });
+const [editingId, setEditingId] = useState<number | null>(null);
+const [errorMessage, setErrorMessage] = useState<string>('');
+const [formData, setFormData] = useState<{ heading: string, description: string, progress: number }>({
+  heading: '',
+  description: '',
+  progress: 0
+});
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: name === 'progress' ? Number(value) : value
+  }));
+};
+
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -80,12 +87,16 @@ export default function Message() {
     }
   };
 
-  const startEditing = (id) => {
+  const startEditing = (id: number) => {
     const card = cards.find(card => card.id === id);
-    setFormData({ ...card });
-    setEditingId(id);
-    togglePopup();
+    if (card) {
+      setFormData(card);
+      setEditingId(id);
+      togglePopup();
+    }
   };
+
+  
   return (
     <>
     {showPopup && <div className={styles.backdrop} />}

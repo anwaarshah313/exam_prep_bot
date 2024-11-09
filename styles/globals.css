@@ -59,13 +59,13 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: rgb(181, 181, 181) ;
-  border-radius: 4px; 
+  /* border-radius: 4px;  */
   border: none; 
 }
 
 ::-webkit-scrollbar-track {
   background: var(--foreground);
-  border-radius: 10px; 
+  /* border-radius: 10px;  */
 }
 
 
