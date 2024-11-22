@@ -18,7 +18,7 @@
 }
 
 .cardEditBtn {
-    font-size: 14px;
+    font-size: 18px;
     margin-bottom: 10px;
     height: fit-content;
     color: var(--text);
@@ -73,6 +73,11 @@
     font-weight: 600;
     margin: 0 0 10px;
     font-family: var(--heading-font);
+    width: 86%;
+    text-align: left;
+    white-space: nowrap; 
+overflow: hidden; 
+text-overflow:ellipsis;
 }
 
 .cardPra {

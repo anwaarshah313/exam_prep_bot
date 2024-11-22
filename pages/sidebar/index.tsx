@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from 'next/link'; // Importing NavLink from react-router-dom
 import { FaHome, FaUser, FaEnvelope, FaSignOutAlt,FaComment  } from 'react-icons/fa'; // Importing icons from Font Awesome
-
+import { ImStatsBars } from "react-icons/im";
+import { PiChatsFill } from "react-icons/pi";
 import { useRouter } from "next/router";
 import { auth } from "../../firebaseConfig"; // Import Firebase auth
 import { signOut } from "firebase/auth"; // Import signOut method from Firebase
@@ -36,7 +37,7 @@ export default function Sidebar() {
                 {/* Desktop/Laptop Sidebar */}
                 <ul className={styles.leptopUl}>
                 <div>
-                    <Link href="/" className={styles.navLink}>
+                    {/* <Link href="/" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
                             <FaHome className={styles.sidebarIcon} /> Home
                         </li>
@@ -45,15 +46,15 @@ export default function Sidebar() {
                         <li className={`${styles.sidebarLi} ${isActive('/about') ? ` ${styles.active}` : ''}`}>
                             <FaUser className={styles.sidebarIcon} /> Profile
                         </li>
+                    </Link> */}
+                    <Link href="/" className={styles.navLink}>
+                        <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
+                        <PiChatsFill className={styles.sidebarIcon} /> Exam Bot
+                        </li>
                     </Link>
                     <Link href="/message" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/message') ? ` ${styles.active}` : ''}`}>
-                            <FaEnvelope className={styles.sidebarIcon} /> Messages
-                        </li>
-                    </Link>
-                    <Link href="/chats" className={styles.navLink}>
-                        <li className={`${styles.sidebarLi} ${isActive('/chats') ? ` ${styles.active}` : ''}`}>
-                        <FaComment className={styles.sidebarIcon} /> Chat
+                        <ImStatsBars className={styles.sidebarIcon} /> Exam Stats
                         </li>
                     </Link>
                     </div>
@@ -67,7 +68,7 @@ export default function Sidebar() {
                 {/* Mobile Sidebar */}
                 <ul className={styles.mobileUl}>
                 <div>
-                    <Link href="/" className={styles.navLink}>
+                    {/* <Link href="/" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
                             <FaHome className={styles.sidebarIcon} />
                         </li>
@@ -76,15 +77,15 @@ export default function Sidebar() {
                         <li className={`${styles.sidebarLi} ${isActive('/about') ? ` ${styles.active}` : ''}`}>
                             <FaUser className={styles.sidebarIcon} />
                         </li>
+                    </Link> */}
+                    <Link href="/" className={styles.navLink}>
+                        <li className={`${styles.sidebarLi} ${isActive('/') ? ` ${styles.active}` : ''}`}>
+                        <PiChatsFill className={styles.sidebarIcon} />
+                        </li>
                     </Link>
                     <Link href="/message" className={styles.navLink}>
                         <li className={`${styles.sidebarLi} ${isActive('/message') ? ` ${styles.active}` : ''}`}>
-                            <FaEnvelope className={styles.sidebarIcon} />
-                        </li>
-                    </Link>
-                    <Link href="/chats" className={styles.navLink}>
-                        <li className={`${styles.sidebarLi} ${isActive('/chats') ? ` ${styles.active}` : ''}`}>
-                        <FaComment className={styles.sidebarIcon} />
+                            <ImStatsBars  className={styles.sidebarIcon} />
                         </li>
                     </Link>
                     </div>

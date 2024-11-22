@@ -24,6 +24,10 @@ const Login: React.FC<LoginProps> = () => {
             setIsLoggingIn(true);
             await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
             await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            const userId = user.uid; // This is the Firebase User ID
+            console.log("User ID:", userId); // You can use this ID as needed
             router.push("/"); // Redirect to home page
         } catch (err: any) {
             setError(err.message);
