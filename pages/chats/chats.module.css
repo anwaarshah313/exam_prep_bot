@@ -42,6 +42,7 @@
 
 .userMsg {
     background-color: var(--graphThree);
+    overflow-wrap: break-word;
     padding: 8px 12px;
     line-height: 18px;
     border-radius: 10px;
@@ -55,6 +56,7 @@
 
 .aiMsg {
     background-color: var(--border);
+    overflow-wrap: break-word;
     padding: 8px 14px;
     border-radius: 10px;
     max-width: calc(100% - 100px);
@@ -72,8 +74,11 @@
     bottom: 0px;
     left: 0px;
     background-color: var(--background);
+    display: flex;
+    align-items: center;
     width: 100%;
     padding: 4px 10px;
+    
     border-top: 1px solid var(--border);
     font-family: var(--paragraph-font);
 }
@@ -133,6 +138,20 @@
     font-size: 12px;
     font-weight: 600;
     font-family: var(--subtitle-font);
+
+  
+}
+
+.navHead{
+    max-width: 90%;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    height: fit-content;
+
 }
 
 .profileImage {
@@ -284,7 +303,7 @@ text-overflow:ellipsis;
     .aiMsg {
         padding: 4px 8px;
         border-radius: 8px;
-        max-width: calc(100% - 20px);
+        max-width: calc(100% - 30px);
         width: fit-content;
         margin-right: auto;
         justify-content: flex-start;

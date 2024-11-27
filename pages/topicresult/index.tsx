@@ -74,7 +74,7 @@ const TopicResult: React.FC = () => {
     }
   }, [userId, cardId]);
 
-  // console.log(data.threads[2].evaluation.length*10)
+  // console.log(data)
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 

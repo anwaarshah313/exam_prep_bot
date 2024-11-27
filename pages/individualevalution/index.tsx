@@ -3,22 +3,30 @@ import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { useRouter } from 'next/router';
 import config from "@/pages/api/config";
 import styles from "./individualevalution.module.css";
-import { MdOutlineNextPlan, MdKeyboardBackspace } from "react-icons/md";
+import { MdKeyboardBackspace } from "react-icons/md";
 
-interface Data {
-  evaluation: {
+interface Evaluation {
+    id: number;
     answer: string;
     feedback: string;
     question: string;
     score: number;
     suggestions: string;
-  }[];
 }
 
-export default function IndividualEvaluation() {
+interface Data {
+    evaluation: Evaluation[];
+}
+
+interface TableField {
+    label: string;
+    key: keyof Evaluation;
+}
+
+const IndividualEvaluation: React.FC = () => {
     const [cardId, setCardId] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
-    const [data, setData] = useState<Data | null>(null); // Ensure your data type matches the expected structure
+    const [data, setData] = useState<Data | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const router = useRouter();
@@ -36,12 +44,16 @@ export default function IndividualEvaluation() {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [auth]);
 
     useEffect(() => {
         if (router.isReady) {
             const { id } = router.query;
-            setCardId(id as string);
+            if (typeof id === 'string') { // Properly handle the case where id might not be a string
+                setCardId(id);
+            } else if (Array.isArray(id)) {
+                setCardId(id[0]); // Assuming the first id is the relevant one if it's an array
+            }
         }
     }, [router.isReady, router.query]);
 
@@ -70,22 +82,38 @@ export default function IndividualEvaluation() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
+    const tableFields: TableField[] = [
+        { label: 'Question:', key: 'question' },
+        { label: 'Answer:', key: 'answer' },
+        { label: 'Feedback:', key: 'feedback' },
+        { label: 'Score:', key: 'score' },
+        { label: 'Suggestions:', key: 'suggestions' },
+    ];
+
     return (
-        <>
-          <button className={styles.backBtn} onClick={() => router.push('/message')}><MdKeyboardBackspace /></button>
-            {/* <div>User ID: {userId}</div>
-            <div>Card ID: {cardId}</div> */}
-            <div>
-                {data?.evaluation.map((item, index) => (
-                    <div key={index}>
-                        <h3>Question: {item.question}</h3>
-                        <p>Answer: {item.answer}</p>
-                        <p>Feedback: {item.feedback}</p>
-                        <p>Score: {item.score}</p>
-                        <p>Suggestions: {item.suggestions}</p>
-                    </div>
-                ))}
+        <div className={styles.indiMain}>
+            <div className={styles.indiIn}>
+                <button className={styles.backBtn} onClick={() => router.push('/message')}><MdKeyboardBackspace /></button>
+
+                {data && data.evaluation.length > 0 ? (  
+                    data.evaluation.map((item, index) => (
+                        <div className={styles.divRow} key={index}>
+                            <table className={styles.table}>
+                                <tbody className={styles.tableBody}>
+                                    {tableFields.map(field => (
+                                        <tr className={styles.tableRow} key={field.key}>
+                                            <td className={styles.tableData}>{field.label}</td>
+                                            <td className={styles.tableData}>{item[field.key]}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ))
+                ) : <p>No evaluations found</p>}
             </div>
-        </>
-    )
+        </div>
+    );
 }
+
+export default IndividualEvaluation;

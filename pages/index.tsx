@@ -25,8 +25,9 @@ export default function Home() {
     const [inputMessage, setInputMessage] = useState<string>('');
     const [threadIdGen, setThreadIdGen] = useState<string | null>(null);
     const [threads, setThreads] = useState<Thread[]>([]);
-    const [userId, setUserId] = useState<string | null>(null);  
+    const [userId, setUserId] = useState<string | null>(null);
     const [selectedChatName, setSelectedChatName] = useState<string>('');
+    
 
     const auth = getAuth();
 
@@ -40,7 +41,7 @@ export default function Home() {
             const formattedMessages: Message[] = data.messages;
             return formattedMessages;
         } catch (error) {
-           
+
             return [];  // Return empty array on error
         }
     };
@@ -59,7 +60,7 @@ export default function Home() {
 
     const fetchThreads = async () => {
         if (!userId) return;
-    
+
         try {
             const response = await fetch(`${config.apiBaseUrl}/get_user_threads/${userId}`);
             if (!response.ok) {
@@ -68,7 +69,7 @@ export default function Home() {
             const data = await response.json();
             setThreads(data.threads);
         } catch (error) {
-           
+
         }
     };
 
@@ -85,9 +86,17 @@ export default function Home() {
         setActiveChat(updatedChat);
         setInputMessage('');
         setSelectedChatName(thread_title);
+         // Reset textarea height when switching chats
+    const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+    if (textarea) {
+        textarea.style.height = '40px';  // Set to default height
+    }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const textarea = e.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${Math.min(textarea.scrollHeight, 100)}px`;
         setInputMessage(e.target.value);
     };
 
@@ -102,12 +111,12 @@ export default function Home() {
 
     const sendMessage = async () => {
         if (!activeChat || !inputMessage || !userId) {
-           
+
             return;
         }
 
         const messageData = {
-            user: "user", 
+            user: "user",
             message: inputMessage,
             thread_id: activeChat.id
         };
@@ -127,8 +136,13 @@ export default function Home() {
                 throw new Error('Failed to send message.');
             }
         } catch (error) {
-           
+
         }
+          // Reset textarea height when switching chats
+    const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+    if (textarea) {
+        textarea.style.height = '40px';  // Set to default height
+    }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -143,7 +157,7 @@ export default function Home() {
             alert("No user logged in!");
             return;
         }
-    
+
         try {
             const response = await axios.get(`${config.apiBaseUrl}/start_thread?user_id=${userId}`);
             if (response.status === 200 && response.data && response.data.thread_id) {
@@ -155,7 +169,7 @@ export default function Home() {
                 throw new Error('Failed to start a new thread.');
             }
         } catch (error) {
-         
+
         }
     };
 
@@ -168,7 +182,7 @@ export default function Home() {
                 }
                 fetchThreads();
             } catch (error) {
-                
+
             }
         }
     };
@@ -184,16 +198,19 @@ export default function Home() {
             <div className={styles.chatIn}>
                 <div className={styles.chatOut}>
                     <div className={styles.msgOut}>
-                        
+
                         {activeChat ? (
                             <div className={styles.chatNav}>
-                         Chat: {selectedChatName}
+                                <h1 className={styles.navHead}>
+                                    Chat: {selectedChatName}
+                                </h1>
+
                             </div>
                         ) : (
                             <></>
                         )}
-          
-         
+
+
 
 
                         {activeChat?.messages.length === 0 ? (<p className={styles.selectChatText}>Please click new chat and start conversation!</p>) : (
@@ -234,7 +251,7 @@ export default function Home() {
                                                             )}
                                                         </>
                                                     )}
-                                                  <div ref={messageEndRef} />  {/* Empty div for scrolling reference */}
+                                                    <div ref={messageEndRef} />  {/* Empty div for scrolling reference */}
                                                 </div>
                                             ))
                                         ) : (
@@ -247,14 +264,13 @@ export default function Home() {
                             </>)}
                         {activeChat ? (
                             <div className={styles.inputContainer}>
-                                <textarea
-                                    className={styles.inputMessage}
-                                    value={inputMessage}
-                                    onChange={handleInputChange}
-                                    onKeyDown={handleKeyDown}
-                                    placeholder="Type your message here..."
-                                    rows={1}
-                                />
+                            <textarea
+                className={styles.inputMessage}
+                value={inputMessage}
+                onChange={handleInputChange}
+                placeholder="Type your message here..."
+                rows={1}
+            />
                                 <button className={styles.sendMessageButton} onClick={sendMessage}>
                                     Send
                                 </button>
@@ -271,26 +287,26 @@ export default function Home() {
                                 <VscGitPullRequestNewChanges className={styles.addBtnIcon} />
                             </button>
                         </div>
-                
+
 
                         <div className={styles.idNameDiv}>
-                        {threads.map((thread) => (
-    <div
-        className={`${styles.idName} ${activeChat && activeChat.id === thread.thread_id ? styles.activeIdName : ''}`}
-        key={thread.thread_id}
-        onClick={() => handleChatClick(thread.thread_id, thread.thread_title)}  // Adjusted to pass thread title
-    >
-        <span className={styles.idSpan}>
-            {thread.thread_title}  {/* Display the thread title */}
-        </span>
-        <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); deleteChat(thread.thread_id); }}>
-            <VscTrash className={styles.deleteBtnIcon} />
-        </button>
-    </div>
-))}
+                            {threads.map((thread) => (
+                                <div
+                                    className={`${styles.idName} ${activeChat && activeChat.id === thread.thread_id ? styles.activeIdName : ''}`}
+                                    key={thread.thread_id}
+                                    onClick={() => handleChatClick(thread.thread_id, thread.thread_title)}  // Adjusted to pass thread title
+                                >
+                                    <span className={styles.idSpan}>
+                                        {thread.thread_title}  {/* Display the thread title */}
+                                    </span>
+                                    <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); deleteChat(thread.thread_id); }}>
+                                        <VscTrash className={styles.deleteBtnIcon} />
+                                    </button>
+                                </div>
+                            ))}
 
                         </div>
-                
+
 
                     </div>
                 </div>
