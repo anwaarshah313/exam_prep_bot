@@ -25,6 +25,8 @@ export default function Message() {
   });
   const router = useRouter();
 
+
+  console.log("okokok", cards)
  // Fetching data from the backend API
  useEffect(() => {
   const fetchData = async () => {
@@ -126,14 +128,13 @@ const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement
             <div key={card.id} className={styles.card}>
               <div className={styles.headRowOut}>
               <h3 className={styles.CardHead}>{card.heading}</h3>
-              {/* <button className={styles.cardEditBtn} onClick={() => router.push('/topicresult')}>open</button> */}
-              <button className={styles.cardEditBtn} onClick={() => router.push(`/topicresult?id=${card.id}`)}><MdOutlineNextPlan /></button>
 
 
               </div>
               <p className={styles.cardPra}>{card.description}</p>
-              <progress className={styles.progressBar} value={card.progress} max="100"></progress>
-              {/* <button className={styles.addCardBtn} onClick={() => startEditing(card.id)}> Edit <FaEdit  className={styles.globleIcon}/></button> */}
+              {/* <progress className={styles.progressBar} value={card.progress} max="100"></progress> */}
+
+              <button className={styles.cardEditBtn} onClick={() => router.push(`/topicresult?id=${card.id}`)}> See More...</button>
             </div>
           ))}
           </div>

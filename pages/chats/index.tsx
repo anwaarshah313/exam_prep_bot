@@ -26,7 +26,7 @@ export default function Chats() {
     
     const auth = getAuth();
 
-
+console.log("active",activeChat)
 
         
 
@@ -211,7 +211,7 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
                     <div className={styles.msgOut}>
                         {activeChat ? (
                             <div className={styles.chatNav}>
-                                Chat ID: {activeChat.id}
+                                Chat : {threads.thread_title}
                             </div>
                         ) : (
                             <></>

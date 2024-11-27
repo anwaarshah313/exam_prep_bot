@@ -1,34 +1,34 @@
-import React, { useEffect, useState , useRef} from 'react';
-import styles from "../pages/chats/chats.module.css";
+import React, { useEffect, useState, useRef } from 'react';
+import styles from '../pages/chats/chats.module.css';
 import axios from 'axios';
 import { VscGitPullRequestNewChanges, VscTrash } from "react-icons/vsc";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import config from "@/pages/api/config"
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
+import config from "@/pages/api/config";
+
+interface Message {
+    user: 'user' | 'ai';
+    message: string;
+}
+
+interface Chat {
+    id: string;
+    messages: Message[];
+}
+
+interface Thread {
+    thread_id: string;
+    thread_title: string;
+}
 
 export default function Home() {
-    type Message = {
-        user: 'user' | 'ai';
-        message: string;
-    };
-
-    type Chat = {
-        id: string;
-        messages: Message[];
-    };
-
-
-    // Initialize activeChat as an object to store both user and ai
     const [activeChat, setActiveChat] = useState<Chat | null>(null);
     const [inputMessage, setInputMessage] = useState<string>('');
-    const [threadIdGen, setThreadIdGen] = useState<any>(null);
-    const [threads, setThreads] = useState<any>([]);
-    const [userId, setUserId] = useState<string | null>(null);  // State to hold the user ID
-    
+    const [threadIdGen, setThreadIdGen] = useState<string | null>(null);
+    const [threads, setThreads] = useState<Thread[]>([]);
+    const [userId, setUserId] = useState<string | null>(null);  
+    const [selectedChatName, setSelectedChatName] = useState<string>('');
+
     const auth = getAuth();
-
-
-
-        
 
     const fetchMessages = async (thread_id: string) => {
         try {
@@ -37,27 +37,16 @@ export default function Home() {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
-            console.log('Msg',data)
-            // Assuming data.messages is an array of objects {ai: "string", user: "string"}
-            const formattedMessages = data.messages;
-    
+            const formattedMessages: Message[] = data.messages;
             return formattedMessages;
         } catch (error) {
-            console.error('Error fetching messages:', error);
+           
             return [];  // Return empty array on error
         }
     };
-    
-    
 
     useEffect(() => {
-        if (threadIdGen && threads.some(t => t === threadIdGen)) {
-            handleChatClick(threadIdGen);
-        }
-    }, [threads, threadIdGen]);  // Re-run when threads or threadIdGen changes
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
+        onAuthStateChanged(auth, (user: User | null) => {
             if (user) {
                 localStorage.setItem('userId', user.uid); // Store the user ID in local storage
                 setUserId(user.uid); // Also set it in state if not yet set
@@ -66,11 +55,7 @@ export default function Home() {
                 setUserId(null);
             }
         });
-
-        return () => unsubscribe(); // Cleanup subscription on unmount
     }, []);
-
-
 
     const fetchThreads = async () => {
         if (!userId) return;
@@ -83,85 +68,76 @@ export default function Home() {
             const data = await response.json();
             setThreads(data.threads);
         } catch (error) {
-            console.error('Error fetching threads:', error);
+           
         }
     };
-    
+
     useEffect(() => {
         fetchThreads();
     }, [userId]);
-    console.log("hhhhhhh", threads)
 
-    
-    const handleChatClick = async (thread_id: string) => {
+    const handleChatClick = async (thread_id: string, thread_title: string) => {
         const messages = await fetchMessages(thread_id);
         const updatedChat: Chat = {
             id: thread_id,
             messages: messages
         };
         setActiveChat(updatedChat);
-        setInputMessage(''); // Clear input when changing chats
+        setInputMessage('');
+        setSelectedChatName(thread_title);
     };
-    
 
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setInputMessage(e.target.value);
     };
 
-    const messageEndRef = useRef<HTMLDivElement>(null); 
+    const messageEndRef = useRef<HTMLDivElement>(null);
     const scrollToBottom = () => {
         messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     useEffect(() => {
         scrollToBottom();
-    }, [activeChat?.messages]); // Scroll to bottom every time messages update
-
+    }, [activeChat?.messages]);
 
     const sendMessage = async () => {
-    if (!activeChat || !inputMessage || !userId) {
-        console.error("No active chat or message input or user ID.");
-        return;
-    }
+        if (!activeChat || !inputMessage || !userId) {
+           
+            return;
+        }
 
-    const messageData = {
-        user: "user", // As specified, always send "human" as the user
-        message: inputMessage,
-        thread_id: activeChat.id
+        const messageData = {
+            user: "user", 
+            message: inputMessage,
+            thread_id: activeChat.id
+        };
+
+        try {
+            const response = await axios.post(`${config.apiBaseUrl}/send_message`, messageData);
+            if (response.status === 200 && response.data) {
+                const newMessages = response.data.messages as Message[];
+                const updatedChat = {
+                    ...activeChat,
+                    messages: newMessages
+                };
+
+                setActiveChat(updatedChat);
+                setInputMessage('');
+            } else {
+                throw new Error('Failed to send message.');
+            }
+        } catch (error) {
+           
+        }
     };
 
-    try {
-        const response = await axios.post(`${config.apiBaseUrl}/send_message`, messageData);
-        if (response.status === 200 && response.data) {
-            const newMessages = response.data.messages;
-            
-            console.log('new Messages',newMessages);
-           
-            const updatedChat = {
-                ...activeChat,
-                messages: [...newMessages]
-            };
-
-            setActiveChat(updatedChat); // Update active chat with new messages
-            setInputMessage(''); // Clear input after sending
-        } else {
-            throw new Error('Failed to send message.');
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
         }
-    } catch (error) {
-        console.error('Error sending message:', error);
-    }
-};
+    };
 
-
-
-const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.shiftKey) {
-        // Prevent default to avoid adding a new line when sending the message
-        e.preventDefault();
-        sendMessage();
-    }
-    // If only Enter is pressed, allow it to add a new line by not doing anything
-};
     const addNewChat = async () => {
         if (!userId) {
             alert("No user logged in!");
@@ -172,31 +148,29 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
             const response = await axios.get(`${config.apiBaseUrl}/start_thread?user_id=${userId}`);
             if (response.status === 200 && response.data && response.data.thread_id) {
                 const newThreadId = response.data.thread_id;
-                console.log("New thread created with ID:", newThreadId);
-                setThreadIdGen(newThreadId);  // Assuming the response includes a thread_id
-    
-                // Fetch updated threads list after adding a new thread and select the new chat
+                setThreadIdGen(newThreadId);
                 await fetchThreads();
-                handleChatClick(newThreadId);  // Select the new chat automatically
+                handleChatClick(newThreadId, "");  // Assume empty title or handle accordingly
             } else {
                 throw new Error('Failed to start a new thread.');
             }
         } catch (error) {
-            console.error('Error starting new chat:', error);
+         
         }
     };
-    
-    console.log("thread id", threadIdGen)
 
-
-
-    const deleteChat = (chatId: string) => {
-        // if (window.confirm("Are you sure you want to delete this chat?")) {
-        //     setChats(chats.filter(chat => chat.id !== chatId));
-        //     if (activeChat && activeChat.id === chatId) {
-        //         setActiveChat(null); // Clear active chat if it's the one being deleted
-        //     }
-        // }
+    const deleteChat = async (chatId: string) => {
+        if (window.confirm("Are you sure you want to delete this chat?")) {
+            try {
+                await axios.delete(`${config.apiBaseUrl}/delete_chat/${chatId}`);
+                if (activeChat && activeChat.id === chatId) {
+                    setActiveChat(null);
+                }
+                fetchThreads();
+            } catch (error) {
+                
+            }
+        }
     };
 
     const showProfileImage = (messages: Message[], index: number) => {
@@ -205,17 +179,22 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     };
 
     return (
+
         <div className={styles.chatMain}>
             <div className={styles.chatIn}>
                 <div className={styles.chatOut}>
                     <div className={styles.msgOut}>
+                        
                         {activeChat ? (
                             <div className={styles.chatNav}>
-                                Chat ID: {activeChat.id}
+                         Chat: {selectedChatName}
                             </div>
                         ) : (
                             <></>
                         )}
+          
+         
+
 
                         {activeChat?.messages.length === 0 ? (<p className={styles.selectChatText}>Please click new chat and start conversation!</p>) : (
                             <>
@@ -296,19 +275,20 @@ const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
 
                         <div className={styles.idNameDiv}>
                         {threads.map((thread) => (
-            <div
-                className={`${styles.idName} ${activeChat && activeChat.id === thread.thread_id ? styles.activeIdName : ''}`}
-                key={thread.thread_id}
-                onClick={() => handleChatClick(thread.thread_id)}
-            >
-                <span className={styles.idSpan}>
-                    {thread.thread_title}  {/* Display the thread title */}
-                </span>
-                <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); deleteChat(thread.thread_id); }}>
-                    <VscTrash className={styles.deleteBtnIcon} />
-                </button>
-            </div>
-        ))}
+    <div
+        className={`${styles.idName} ${activeChat && activeChat.id === thread.thread_id ? styles.activeIdName : ''}`}
+        key={thread.thread_id}
+        onClick={() => handleChatClick(thread.thread_id, thread.thread_title)}  // Adjusted to pass thread title
+    >
+        <span className={styles.idSpan}>
+            {thread.thread_title}  {/* Display the thread title */}
+        </span>
+        <button className={styles.deleteBtn} onClick={(e) => { e.stopPropagation(); deleteChat(thread.thread_id); }}>
+            <VscTrash className={styles.deleteBtnIcon} />
+        </button>
+    </div>
+))}
+
                         </div>
                 
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { useRouter } from 'next/router';
 import config from "@/pages/api/config";
+import styles from "./individualevalution.module.css";
+import { MdOutlineNextPlan, MdKeyboardBackspace } from "react-icons/md";
 
 interface Data {
   evaluation: {
@@ -70,6 +72,7 @@ export default function IndividualEvaluation() {
 
     return (
         <>
+          <button className={styles.backBtn} onClick={() => router.push('/message')}><MdKeyboardBackspace /></button>
             {/* <div>User ID: {userId}</div>
             <div>Card ID: {cardId}</div> */}
             <div>
