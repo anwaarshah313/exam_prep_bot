@@ -170,6 +170,12 @@
     visibility: hidden;
 }
 
+/* Add this in your chats.module.css */
+.thinkingMessage {
+    font-style: italic;
+    color: gray;
+    margin-left: 20px;
+}
 
 
 

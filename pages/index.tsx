@@ -27,7 +27,7 @@ export default function Home() {
     const [threads, setThreads] = useState<Thread[]>([]);
     const [userId, setUserId] = useState<string | null>(null);
     const [selectedChatName, setSelectedChatName] = useState<string>('');
-    
+
 
     const auth = getAuth();
 
@@ -86,11 +86,11 @@ export default function Home() {
         setActiveChat(updatedChat);
         setInputMessage('');
         setSelectedChatName(thread_title);
-         // Reset textarea height when switching chats
-    const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
-    if (textarea) {
-        textarea.style.height = '40px';  // Set to default height
-    }
+        // Reset textarea height when switching chats
+        const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+        if (textarea) {
+            textarea.style.height = '40px';  // Set to default height
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -109,41 +109,149 @@ export default function Home() {
         scrollToBottom();
     }, [activeChat?.messages]);
 
+    // const sendMessage = async () => {
+    //     if (!activeChat || !inputMessage || !userId) {
+
+    //         return;
+    //     }
+
+    //     const messageData = {
+    //         user: "user",
+    //         message: inputMessage,
+    //         thread_id: activeChat.id
+    //     };
+
+    //     try {
+    //         const response = await axios.post(`${config.apiBaseUrl}/send_message`, messageData);
+    //         if (response.status === 200 && response.data) {
+    //             const newMessages = response.data.messages as Message[];
+    //             const updatedChat = {
+    //                 ...activeChat,
+    //                 messages: newMessages
+    //             };
+
+    //             setActiveChat(updatedChat);
+    //             setInputMessage('');
+    //         } else {
+    //             throw new Error('Failed to send message.');
+    //         }
+    //     } catch (error) {
+
+    //     }
+    //     // Reset textarea height when switching chats
+    //     const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+    //     if (textarea) {
+    //         textarea.style.height = '40px';  // Set to default height
+    //     }
+    // };
+    // const sendMessage = async () => {
+    //     if (!activeChat || !inputMessage || !userId) {
+    //         return;
+    //     }
+
+    //     // Optimistic UI update
+    //     const newMessage: Message = {
+    //         user: "user",
+    //         message: inputMessage,
+    //     };
+
+    //     const updatedChat: Chat = {
+    //         ...activeChat,
+    //         messages: [...activeChat.messages, newMessage],
+    //     };
+
+    //     setActiveChat(updatedChat); // Update the UI immediately
+    //     setInputMessage(''); // Clear the input
+
+    //     // Reset textarea height
+    //     const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+    //     if (textarea) {
+    //         textarea.style.height = '40px'; // Set to default height
+    //     }
+
+    //     // Send the message to the server
+    //     try {
+    //         const response = await axios.post(`${config.apiBaseUrl}/send_message`, {
+    //             user: "user",
+    //             message: newMessage.message,
+    //             thread_id: activeChat.id,
+    //         });
+
+    //         if (response.status === 200 && response.data) {
+    //             const serverMessages = response.data.messages as Message[];
+    //             const newUpdatedChat: Chat = {
+    //                 ...activeChat,
+    //                 messages: serverMessages,
+    //             };
+    //             setActiveChat(newUpdatedChat); // Sync with server response
+    //         } else {
+    //             throw new Error('Failed to send message.');
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         // Handle error if needed (e.g., revert optimistic update or show an error message)
+    //     }
+    // };
     const sendMessage = async () => {
         if (!activeChat || !inputMessage || !userId) {
-
             return;
         }
 
-        const messageData = {
+        // Optimistic UI update for user's message
+        const userMessage: Message = {
             user: "user",
             message: inputMessage,
-            thread_id: activeChat.id
         };
 
-        try {
-            const response = await axios.post(`${config.apiBaseUrl}/send_message`, messageData);
-            if (response.status === 200 && response.data) {
-                const newMessages = response.data.messages as Message[];
-                const updatedChat = {
-                    ...activeChat,
-                    messages: newMessages
-                };
+        const aiThinkingMessage: Message = {
+            user: "ai",
+            message: "AI is thinking...",
+        };
 
-                setActiveChat(updatedChat);
-                setInputMessage('');
+        const updatedChat: Chat = {
+            ...activeChat,
+            messages: [...activeChat.messages, userMessage, aiThinkingMessage],
+        };
+
+        setActiveChat(updatedChat); // Update the UI with user's message and "thinking" indicator
+        setInputMessage(''); // Clear the input
+
+        // Reset textarea height
+        const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
+        if (textarea) {
+            textarea.style.height = '40px'; // Set to default height
+        }
+
+        // Send the message to the server
+        try {
+            const response = await axios.post(`${config.apiBaseUrl}/send_message`, {
+                user: "user",
+                message: userMessage.message,
+                thread_id: activeChat.id,
+            });
+
+            if (response.status === 200 && response.data) {
+                const serverMessages = response.data.messages as Message[];
+                const newUpdatedChat: Chat = {
+                    ...activeChat,
+                    messages: serverMessages,
+                };
+                setActiveChat(newUpdatedChat); // Replace "thinking" message with actual AI response
             } else {
                 throw new Error('Failed to send message.');
             }
         } catch (error) {
-
+            console.error(error);
+            // Remove "thinking" message and handle error
+            const revertedChat = {
+                ...activeChat,
+                messages: activeChat.messages.filter((msg) => msg.message !== "AI is thinking..."),
+            };
+            setActiveChat(revertedChat);
         }
-          // Reset textarea height when switching chats
-    const textarea = document.querySelector('.' + styles.inputMessage) as HTMLTextAreaElement;
-    if (textarea) {
-        textarea.style.height = '40px';  // Set to default height
-    }
     };
+
+
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -231,9 +339,13 @@ export default function Home() {
                                                             ) : (
                                                                 <div className={styles.profileImagePlaceholder}></div>
                                                             )}
-                                                            <p className={styles.aiMsg}>
+                                                            {/* <p className={styles.aiMsg}>
+                                                                {message.message}
+                                                            </p> */}
+                                                            <p className={message.user === 'ai' && message.message === "AI is thinking..." ? styles.thinkingMessage : styles.aiMsg}>
                                                                 {message.message}
                                                             </p>
+
                                                         </>
                                                     ) : (
                                                         <>
@@ -264,13 +376,13 @@ export default function Home() {
                             </>)}
                         {activeChat ? (
                             <div className={styles.inputContainer}>
-                            <textarea
-                className={styles.inputMessage}
-                value={inputMessage}
-                onChange={handleInputChange}
-                placeholder="Type your message here..."
-                rows={1}
-            />
+                                <textarea
+                                    className={styles.inputMessage}
+                                    value={inputMessage}
+                                    onChange={handleInputChange}
+                                    placeholder="Type your message here..."
+                                    rows={1}
+                                />
                                 <button className={styles.sendMessageButton} onClick={sendMessage}>
                                     Send
                                 </button>
