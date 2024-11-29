@@ -37,7 +37,8 @@ export default function Message() {
       try {
         const response = await fetch(`${config.apiBaseUrl}/get_all_topics`);
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          console.log("HTTP ERROR")
+          // throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data = await response.json();
         if (Array.isArray(data)) {
