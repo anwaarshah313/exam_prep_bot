@@ -35,20 +35,27 @@ export default function Message() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-      const response = await fetch(`${config.apiBaseUrl}/get_all_topics`);
-      const data = await response.json();
-        // Transform data to fit the Card interface and initial progress (assuming progress needed)
-        const transformedData = data.map((item: any) => ({
-          id: item.id,
-          heading: item.title,
-          description: item.description,
-          progress: 0 // Default progress
-        }));
-        setCards(transformedData);
+        const response = await fetch(`${config.apiBaseUrl}/get_all_topics`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        if (Array.isArray(data)) {
+          const transformedData = data.map((item: any) => ({
+            id: item.id,
+            heading: item.title,
+            description: item.description,
+            progress: 0,
+          }));
+          setCards(transformedData);
+        } else {
+          setErrorMessage('Unexpected response format from the API.');
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         setErrorMessage('Failed to fetch data.');
       }
+      
     };
     fetchData();
   }, []);
